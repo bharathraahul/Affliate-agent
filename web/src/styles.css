@@ -274,6 +274,50 @@ body {
   border-color: var(--terra);
 }
 
+/* ── Hero chat preview (links to /chat) ── */
+.chat-preview {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.chat-preview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 56px -26px rgba(70, 50, 30, 0.55);
+}
+.chat-preview__cta {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ── Chat page (/chat) ── */
+.chat-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.chat-page__main {
+  flex: 1;
+  display: flex;
+  padding: 32px 0 40px;
+}
+.chat-page__inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 860px;
+}
+.chat-page .chat-shell {
+  flex: 1;
+  height: auto;
+  min-height: 540px;
+}
+
 /* ── Sections ── */
 .section {
   padding: 80px 0;
