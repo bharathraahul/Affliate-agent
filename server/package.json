@@ -1,0 +1,11 @@
+{
+  "name": "odette-chat-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "POST /api/chat — streams OpenUI Lang as OpenAI SSE via OpenRouter",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -9,3 +9,25 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+    envVars:
+      - key: VITE_USE_MOCK
+        value: "false"
+      - key: VITE_CHAT_API_URL
+        fromService:
+          type: web
+          name: odette-chat-backend
+          envVarKey: RENDER_EXTERNAL_URL
+
+  - type: web
+    runtime: node
+    name: odette-chat-backend
+    rootDir: server
+    buildCommand: "true"
+    startCommand: npm start
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: anthropic/claude-sonnet-4.5
+      - key: ALLOWED_ORIGIN
+        value: "*"
