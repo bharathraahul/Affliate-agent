@@ -107,6 +107,7 @@ async function getConversations(): Promise<any[]> {
 
 async function getMessages(conversationId: string): Promise<any[]> {
   const d = await exec("FACEBOOK_GET_CONVERSATION_MESSAGES", {
+    page_id: FB_PAGE_ID,
     conversation_id: conversationId,
   });
   return d?.data ?? d?.messages ?? [];
@@ -116,7 +117,7 @@ async function sendMessage(recipientId: string, text: string) {
   await exec("FACEBOOK_SEND_MESSAGE", {
     page_id: FB_PAGE_ID,
     recipient_id: recipientId,
-    message: text,
+    message_text: text,
   });
 }
 
