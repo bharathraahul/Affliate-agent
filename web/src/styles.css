@@ -310,7 +310,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 860px;
+  max-width: 100%;
 }
 .chat-page .chat-shell {
   flex: 1;
