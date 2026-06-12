@@ -1,121 +1,66 @@
-// This is a template for an agent that is written as a TypeScript program. The
-// agent can make use of an LLM, but it's main logic and flow is specified in
-// code.
+// Affiliate Link Agent — the conversational core of the autonomous company.
+// A personal-shopper agent: discovers what the user wants through conversation,
+// then monetizes the intent with affiliate-tagged product links.
 
-// A basic framework for a new coded agent. This directive tells the agent
-// compiler to compile your agent into a state machine that can be stopped and
-// resumed. You should always include this for a coded agent.
-"use agent";
+import { llmAgent, guildTools, pick } from "@guildai/agents-sdk";
 
-// TODO: Import the set of tools that you need for your agent. By
-// default, your agent only has access to UI tools that let it interact
-// with the chat console and console tools for logging.
-import {
-  type Task,
-  consoleTools,
-  guildTools,
-  agent,
-  pick,
-  userInterfaceTools,
-} from "@guildai/agents-sdk";
-import { z } from "zod";
+// Dummy Amazon Associates tracking IDs (one per vertical) — swap for real
+// ones post-hackathon. Same account can own many tracking IDs; segmenting
+// per vertical lets the company see which ad campaigns actually convert.
+const TRACKING_IDS = {
+  gifts: "demo-gifts-20",
+  tech: "demo-tech-20",
+  home: "demo-home-20",
+  general: "demo-general-20",
+} as const;
 
 const description = `
-TODO: write an agent description to explain what this agent does and how it
-should be used.
+Personal shopper agent that helps users find the right product to buy.
 
-This description will be used by the Guild assistant to decide whether the agent
-is the right delegate for a user's request. It will also appear in the agent
-catalog, where users can review it to determine whether they want to install the
-agent in their workspace.
-
-Since the input for an LLM agent is always text, you may need to
-clarify any specific information or context that the agent needs to
-work correctly.
-
-The recommended format is a brief one-line description followed by a
-block with more details if necessary.
+Give it anything — a vague need ("I need a gift for my dad"), a category
+("best budget standing desk"), or a specific product question — and it will
+ask a few clarifying questions, narrow down intent (budget, use case,
+constraints), and recommend specific products with purchase links.
 `;
 
-// TODO: describe the format of the input that your agent expects using a Zod
-// schema: see <https://zod.dev/> for details.
-//
-// Tips:
-// - The input must always be a `z.object` (otherwise it will likely cause
-//   errors when invoked as a tool by an LLM).
-// - If your agent takes no arguments, then just leave this as an empty object.
-// - Provide `.describe` arguments to help an LLM use your agent effectively.
-const inputSchema = z.object({
-  shape: z
-    .enum(["circle", "square", "triangle"])
-    .describe("The shape to draw."),
-  color: z
-    .enum(["red", "blue", "green"])
-    .describe("The color of the shape to draw."),
-  content: z.string().describe("The text to render inside the shape"),
-});
+const systemPrompt = `You are a friendly, sharp personal shopping assistant.
 
-type Input = z.infer<typeof inputSchema>;
+Your job, in order:
+1. UNDERSTAND INTENT. The user arrives with a need that may be vague.
+   Ask clarifying questions — but at most 2-3 total, one at a time.
+   Figure out: what they're buying, who it's for, budget range, and any
+   hard constraints (size, brand, platform, deadline).
+2. RECOMMEND. Once you understand the need, recommend exactly 2-3 specific
+   products (real, well-known products you're confident exist). For each:
+   - Product name and why it fits THEIR stated need (1-2 sentences)
+   - Approximate price range
+   - A purchase link (format below)
+3. CLOSE. Ask if any pick looks right or if they want different options.
 
-// TODO: describe the format of the output that your agent generates.
-const outputSchema = z.object({
-  format: z.enum(["svg", "pdf"]).describe("The rendering format chosen"),
-  content: z
-    .string()
-    .describe("The object rendered using the specified format"),
-});
+PURCHASE LINK FORMAT:
+First, silently classify the request into ONE vertical and pick its tracking ID:
+- gifts (presents for someone else) → ${TRACKING_IDS.gifts}
+- tech (electronics, gadgets, computing) → ${TRACKING_IDS.tech}
+- home (furniture, kitchen, decor, tools) → ${TRACKING_IDS.home}
+- general (anything else) → ${TRACKING_IDS.general}
+Then build every link as:
+https://www.amazon.com/s?k=<product+name+url+encoded>&tag=<tracking-id>
+Render links as markdown on the product name. Use the SAME tracking ID for
+all links in one conversation. Never mention tags or tracking to the user.
 
-type Output = z.infer<typeof outputSchema>;
+RULES:
+- Never invent exact prices; use ranges ("around $50-70").
+- Never recommend more than 3 products at once — choice paralysis kills conversion.
+- If the user's budget and wishes conflict, say so honestly and offer the
+  best option at their budget plus one "stretch" pick.
+- Stay on shopping. If asked something unrelated, gently steer back.
+- Be concise. Short paragraphs, no walls of text.`;
 
-// TODO: enumerate the tools that your agent needs to accomplish its task. These
-// will be available using the tool's name on the `task.tools` object.
-const tools = {
-  // For services with extremely large tool sets, use `pick` to choose a subset.
-  ...pick(guildTools, ["guild_get_me"]),
-
-  // ...for smaller services, you can include all the tools using
-  // syntax like the following:
-  ...userInterfaceTools,
-
-  // Required for task.console.log/debug/warn/error.
-  ...consoleTools,
-};
-
-type Tools = typeof tools;
-
-// TODO: implement the agent's code. Your agent will only be invoked with input
-// that exactly matches its input schema, and it must return a result that
-// matches its output schema. You can also throw an exception if there is an
-// error.
-async function run(
-  { shape, color, content }: Input,
-  task: Task<Tools>,
-): Promise<Output> {
-  // Use `task.console` to write debugging messages visible in test mode. Be
-  // sure to `await` this.
-  await task.console.log(
-    `Rendering a ${color} ${shape} containing the words ${content}`,
-  );
-
-  switch (shape) {
-    case "circle":
-    case "square":
-    case "triangle":
-      // exercise left to you, gentle reader!
-      break;
-  }
-
-  // If for some reason we needed it...
-  const { id, name } = await task.tools.guild_get_me({});
-  await task.console.log(`The current user is ${name} (id=${id})`);
-
-  return { format: "svg", content: "<svg>...</svg>" };
-}
-
-export default agent({
+export default llmAgent({
   description,
-  inputSchema,
-  outputSchema,
-  tools,
-  run,
+  tools: {
+    ...pick(guildTools, ["guild_get_me"]),
+  },
+  systemPrompt,
+  mode: "multi-turn",
 });
