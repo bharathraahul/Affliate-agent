@@ -4,6 +4,7 @@
 
 import { llmAgent, guildTools, pick } from "@guildai/agents-sdk";
 
+<<<<<<< HEAD
 // Dummy Amazon Associates tracking IDs (one per vertical) — swap for real
 // ones post-hackathon. Same account can own many tracking IDs; segmenting
 // per vertical lets the company see which ad campaigns actually convert.
@@ -13,6 +14,10 @@ const TRACKING_IDS = {
   home: "demo-home-20",
   general: "demo-general-20",
 } as const;
+=======
+// TODO: replace with your real Amazon Associates tag once approved.
+const AFFILIATE_TAG = "affliateagent-20";
+>>>>>>> b675a9e (personal shopper agent v1)
 
 const description = `
 Personal shopper agent that helps users find the right product to buy.
@@ -37,6 +42,7 @@ Your job, in order:
    - A purchase link (format below)
 3. CLOSE. Ask if any pick looks right or if they want different options.
 
+<<<<<<< HEAD
 PURCHASE LINK FORMAT:
 First, silently classify the request into ONE vertical and pick its tracking ID:
 - gifts (presents for someone else) → ${TRACKING_IDS.gifts}
@@ -47,6 +53,11 @@ Then build every link as:
 https://www.amazon.com/s?k=<product+name+url+encoded>&tag=<tracking-id>
 Render links as markdown on the product name. Use the SAME tracking ID for
 all links in one conversation. Never mention tags or tracking to the user.
+=======
+PURCHASE LINK FORMAT — always construct Amazon search links like this:
+https://www.amazon.com/s?k=<product+name+url+encoded>&tag=${AFFILIATE_TAG}
+Render them as markdown links on the product name.
+>>>>>>> b675a9e (personal shopper agent v1)
 
 RULES:
 - Never invent exact prices; use ranges ("around $50-70").
