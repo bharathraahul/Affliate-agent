@@ -3,8 +3,8 @@ services:
     runtime: static
     name: heyoddete
     rootDir: web
-    buildCommand: npm start
-    staticPublishPath: build
+    buildCommand: npm run build
+    staticPublishPath: dist
     routes:
       - type: rewrite
         source: /*
