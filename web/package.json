@@ -1,0 +1,10 @@
+{
+  "name": "heyoddete-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "heyoddete.com — autonomous personal shopper landing page",
+  "scripts": {
+    "start": "node build.js",
+    "build": "node build.js"
+  }
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>heyoddete — your autonomous personal shopper</title>
+  <meta name="description" content="Tell heyoddete what you're looking for. Our AI personal shopper finds the right products and the best deals — and does the searching for you." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="/">hey<span>oddete</span></a>
+      <nav class="nav__links">
+        <a href="#how">How it works</a>
+        <a href="#why">Why us</a>
+        <a class="btn btn--ghost" href="#chat">Start shopping</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Your autonomous personal shopper</p>
+          <h1>Tell us what you want.<br />We'll find it — and the best deal.</h1>
+          <p class="lead">
+            heyoddete is an AI shopper that talks with you, understands exactly
+            what you need, and hunts down the right products at the right price.
+            No endless tabs. No comparison spreadsheets. Just ask.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#chat">Start shopping free</a>
+            <a class="btn btn--ghost" href="#how">See how it works</a>
+          </div>
+          <p class="hero__note">No signup required to try.</p>
+        </div>
+
+        <div class="hero__panel" id="chat">
+          <div class="chat">
+            <div class="chat__header">
+              <span class="chat__dot"></span> heyoddete
+            </div>
+            <div class="chat__body">
+              <div class="msg msg--bot">Hi! What are you shopping for today?</div>
+              <div class="msg msg--user">A reliable used car under $15k</div>
+              <div class="msg msg--bot">On it — a few quick questions and I'll pull the best matches for you.</div>
+            </div>
+            <form class="chat__input" onsubmit="return false;">
+              <input type="text" placeholder="Type what you're looking for…" aria-label="Chat message" />
+              <button class="btn btn--primary" type="submit">Send</button>
+            </form>
+          </div>
+          <p class="hero__panel-note">Chat interface — placeholder for the OpenUI integration.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container">
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step__num">1</div>
+            <h3>Tell us your need</h3>
+            <p>Describe what you're after in plain language. The more you share, the better we shop.</p>
+          </div>
+          <div class="step">
+            <div class="step__num">2</div>
+            <h3>We do the searching</h3>
+            <p>Our agent scours options, compares choices, and narrows it to what actually fits you.</p>
+          </div>
+          <div class="step">
+            <div class="step__num">3</div>
+            <h3>You get the pick</h3>
+            <p>Receive the best matches with direct links — ready to buy, no guesswork.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="why">
+      <div class="container">
+        <h2>Why heyoddete</h2>
+        <div class="features">
+          <div class="feature">
+            <h3>Saves you hours</h3>
+            <p>Skip the research rabbit hole. We handle the comparison so you don't have to.</p>
+          </div>
+          <div class="feature">
+            <h3>Actually understands you</h3>
+            <p>A real conversation, not a search box. We learn what matters to you before recommending.</p>
+          </div>
+          <div class="feature">
+            <h3>Best deals, found for you</h3>
+            <p>We surface the right product at the right price — every time you shop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta__inner">
+        <h2>Ready to let an agent do your shopping?</h2>
+        <a class="btn btn--primary btn--lg" href="#chat">Start shopping free</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="brand brand--sm">hey<span>oddete</span></span>
+      <span class="footer__copy">© 2026 heyoddete.com</span>
+    </div>
+  </footer>
+</body>
+</html>
