@@ -87,6 +87,4 @@ npm run format   # prettier
 
 Affiliate tracking IDs throughout the project are demo placeholders. Replace them with real merchant affiliate accounts before any live monetization.
 
-## Team
-
-Built by Bharath, Hansel, and Benjamin. See `docs/team.md` for more, and `docs/architecture.md` for a deeper look at the frontend and chat design.
+See `docs/architecture.md` for a deeper look at the frontend and chat design.
