@@ -7,4 +7,5 @@ node_modules
 tsconfig.tsbuildinfo
 
 # Pin dependencies in package.json if you need to do so.
-package-lock.jsonupdated-style.png
+package-lock.json
+updated-style.png
